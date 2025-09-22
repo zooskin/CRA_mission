@@ -23,10 +23,8 @@ def test_add_record_and_finalize():
     m.add_member('alice')
     m.record_attendance('alice', 'monday')
     m.record_attendance('alice', 'wednesday')
-    # before finalize, bonus not applied yet
     assert m.members['alice'].point == 1 + 3
     m.finalize_points()
-    # after finalize, wednesday bonus added
     assert m.members['alice'].point == 1 + 3 + 10
     assert m.members['alice'].grade in [g for g, _ in GRADE_THRESHOLDS]
 
@@ -64,7 +62,6 @@ def test_init_grade_val_filters_and_empty():
     names = [n for n, _ in m.grade_thresholds]
     assert 'A' in names and 'B' in names
 
-    # now test empty thresholds
     AttendanceManager.reset_instance()
     m2 = AttendanceManager(grade_thresholds=[])
     assert m2.lowest_grade_name == 'NORMAL'
